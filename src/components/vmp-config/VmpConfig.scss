@@ -1,0 +1,89 @@
+/*!
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
+ * the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
+ * <p>
+ * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
+ * graphic logo is a trademark of OpenMRS Inc.
+ */
+
+#app .vmp-config {
+  .inner-content {
+    margin-top: 1rem;
+  }
+
+  .inline-sections {
+    display: flex;
+    .section {
+      &:first-of-type {
+        margin-right: 1.5em;
+      }
+    }
+  }
+
+  .section {
+    background-color: white;
+    margin-bottom: 1em;
+    padding: 1em;
+    flex: 1;
+    > label {
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  .inline-fields {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1em;
+    .input-container {
+      &:not(:last-of-type) {
+        margin-right: 1em;
+      }
+      min-width: 120px;
+      &.default-select-multi {
+        min-width: 250px;
+      }
+    }
+    .flex-1 {
+      flex: 1;
+    }
+    .flex-2 {
+      flex: 2;
+    }
+    label > span {
+      margin-left: 1.25rem;
+    }
+  }
+  .order-icons {
+    justify-content: center;
+    width: 25px;
+    :first-child {
+      margin-bottom: 0.5rem;
+    }
+  }
+  .row-number {
+    width: 2em;
+  }
+
+  .country {
+    margin-bottom: 1.75rem;
+    padding: 1rem 1.5rem 1.5rem;
+    background-color: #fafafa;
+  }
+
+  .iris-score,
+  .id-regex {
+    min-width: 250px;
+  }
+
+  .glyphicon-chevron-up,
+  .glyphicon-chevron-down,
+  .add-item,
+  .remove-item {
+    &:not(.disabled) {
+      cursor: pointer;
+      color: #00455c;
+    }
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "home": {
+    "title": "Home"
+  },
+  "common": {
+    "yes": "Yes",
+    "no": "No",
+    "ok": "Ok",
+    "cancel": "Cancel",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "ordinalSuffix": {
+      "st": "st",
+      "nd": "nd",
+      "rd": "rd",
+      "th": "th"
+    },
+    "required": "(Required)",
+    "error": {
+      "required": "Required",
+      "nameUnique": "The name should be unique. Please try again.",
+      "nameInvalid": "Username is invalid. It must be between 2 and 50 characters. Only letters, digits, '.', '-', and '_' are allowed.",
+      "invalidEmail": "The email address is invalid. Please correct it.",
+      "invalidPassword": "Your entered password does not match the needed complexity. It should be minimum 8 characters long and contain at least: one upper and one lower case characters, one digit. Please try again.",
+      "confirmPassword": "Your entered passwords do not match. Please try again."
+    },
+    "switch": {
+      "on": "on",
+      "off": "off"
+    },
+    "return": "Return",
+    "save": "Save",
+    "true": "True",
+    "false": "False"
+  },
+  "dropzone": {
+    "openFileDialog": "Open File Dialog",
+    "acceptedFile": "Accepted File:",
+    "rejectedFile": "Rejected File:"
+  },
+  "vmpConfig": {
+    "title": "Manage Configuration",
+    "syncScope": "Sync Scope",
+    "syncScopeTooltip": "Defines if the tablet will sync data for the specific site or the whole country (depends on the size of the study).",
+    "operatorCredentialsOfflineRetentionTime": "Operator Credentials Offline Retention Time",
+    "operatorCredentialsOfflineRetentionTimeTooltip": "Duration for which the operator credentials will be stored on the local tablet while offline. Once this expires, the operator needs to be online to log in again.",
+    "operatorSessionTimeout": "Operator Session Timeout",
+    "operatorSessionTimeoutTooltip": "Duration for which an operator session is active. After this time, the operator is requested to log in again.",
+    "manufacturers": "Manufacturers",
+    "manufacturersTooltip": "Vaccine manufacturers. A regular expression may be defined for the vial barcode format. If a scanned vial barcode matches this regular expression, this manufacturer will be pre-selected in the app.",
+    "vaccine": "Regimen",
+    "regimenTooltip": "Dosing regimens that participants can follow. The expected manufacturer for each dose should be listed. All regimens must be configured on the Manage Vaccination Schedule page.",
+    "canUseDifferentManufacturers": "Overruling Prescribed Manufacturer",
+    "canUseDifferentManufacturersTooltip": "Indicate whether the operator is allowed to administer a vaccine from a different manufacturer than is specified in the regimen.",
+    "personLanguages": "Languages",
+    "personLanguagesTooltip": "Possible languages in which participants can receive their messages from the application.",
+    "authSteps": "Identification Steps",
+    "authStepsTooltip": "Methods used to identify the participants. Order can be changed, as well as whether the step is mandatory for all participants.",
+    "irisScore": "Iris Quality Threshold Score",
+    "irisScoreTooltip": "Minimum iris quality (in percent) to accept when performing an iris scan. Operator will be asked to rescan the iris if below this quality.",
+    "addressFields": "Address Hierarchy",
+    "addressFieldsTooltip": "For each country, define which address fields should be shown in the app, as well as what they should be displayed as. E.g.: Address 1, display as 'Street'.",
+    "allowManualParticipantIDEntry": "Manual Participant ID Entry",
+    "allowManualParticipantIDEntryTooltip": "Indicate whether the operator is allowed to manually enter a participant ID.",
+    "participantIDRegex": "Participant ID Regex",
+    "manufacturersName": "Name",
+    "barcodeRegex": "Barcode Regex",
+    "regimenName": "Name",
+    "mandatoryField": "Mandatory",
+    "authStepType": "Type",
+    "country": "Country",
+    "addressField": "Field Type",
+    "addressName": "Name",
+    "displayName": "Display Name",
+    "days": "Days",
+    "minutes": "Minutes",
+    "regimen": "Regimen",
+    "addNewCountry": "Add new Country",
+    "delete": "Delete",
+    "success": "Configuration saved successfully!",
+    "addNew": "Add new",
+    "fieldTypeFreeTextIndicator": "out of {maxFieldTypeFreeTextFields} left",
+    "fieldTypeMasterAddressDataIndicator": "out of {maxFieldTypeMasterAddressDataFields} left",
+    "error": {
+      "header": "Error",
+      "configurationInvalid": "Some fields are not entered correctly. Please check the configuration.",
+      "nameRequired": "Name is a mandatory field",
+      "displayNameRequired": "Display Name is a mandatory field",
+      "fieldTypeRequired": "Field Type is a mandatory field",
+      "nameDuplicate": "Name already exists",
+      "manufacturerAssigned": "To delete this manufacturer, please first remove it from the defined regimen.",
+      "regimenLinked": "This regimen is already in use and cannot be removed.",
+      "barcodeRegexInvalid": "Invalid Barcode Regex",
+      "regimenManufacturersEmpty": "At least one manufacturer for each dose should be listed"
+    },
+    "warning": {
+      "header": "Warning",
+      "deleteManufacturer": "Are you sure you want to delete this manufacturer?",
+      "deleteRegimen": "Are you sure you want to delete this regimen?"
+    },
+    "info": {
+      "header": "Info",
+      "addRegimen": "You are adding a new regimen. Please make sure you also add the schedule for this regimen on the Manage Vaccination Schedule page"
+    }
+  },
+  "vmpVaccinationSchedule": {
+    "title": "Manage Vaccination Schedule",
+    "regimen": "Regimen Name",
+    "visitType": "Visit Type",
+    "midPointWindow": "Days from Last Dose",
+    "doseNumber": "Dose",
+    "lowWindow": "Before",
+    "upWindow": "After",
+    "addNew": "Add new",
+    "addRegimenConfig": "Add new Regimen",
+    "delete": "Delete",
+    "dosesCountValidationError": "Please configure all dosing visits.",
+    "dosesTooltip": "Dosing that is configured for selected regimen",
+    "success": "Configuration saved successfully!",
+    "submit": {
+      "header": "Submit Vaccination Schedule",
+      "body": {
+        "regimenAllConfigured": "Are you sure you want to submit Vaccination Schedule?",
+        "regimenPartlyConfigured": "You have configured {configuredRegimen} out of {allRegimen} Regimens.{br}Are you sure you want to submit Vaccination Schedule?"
+      }
+    },
+    "deleteRegimenConfig": {
+      "header": "Delete Regimen",
+      "body": "Are you sure you want to delete `{regimenName}`?"
+    },
+    "changeRegimen": {
+      "header": "Change Regimen",
+      "body": "Changing the Regimen will affect current configuration.{br}Do you want to proceed?"
+    }
+  },
+  "vmpTranslations": {
+    "title": "Manage Translations",
+    "dropzone": {
+      "instruction": "Drag and drop Translation file here. The file should be in .csv format."
+    },
+    "upload": {
+      "title": "Upload File",
+      "instruction1": "Please upload file in <b>.csv</b> format. The file should contain <b>comma delimiter</b>.",
+      "modalHeader": "Uploading new file",
+      "modalBody": "Are you sure you want to overwrite existing data?",
+      "button": "Upload file"
+    },
+    "table": {
+      "defaultLanguage": "Default",
+      "defaultValue": "default",
+      "filter": {
+        "phrase": "Search by phrase",
+        "language": "Search by language"
+      },
+      "empty": "There is no file to be displayed yet"
+    },
+    "addLanguage": {
+      "title": "Add language",
+      "selectPlaceholder": "Select language",
+      "add": "Add"
+    },
+    "save": {
+      "success": "Translations saved successfully"
+    },
+    "return": {
+      "modalHeader": "Warning",
+      "modalBody": "The changes you made will not be saved.{br}Are you sure you want to continue?"
+    },
+    "download": {
+      "modalHeader": "Warning",
+      "modalBody": "You haven’t saved the changes. The downloaded file might not be complete.{br}Do you want to continue?",
+      "button": "Download file"
+    }
+  }
+}
