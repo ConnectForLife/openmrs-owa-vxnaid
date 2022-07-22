@@ -18,7 +18,7 @@ import _ from 'lodash';
 import ValidationError from '../common/form/ValidationError';
 import { PlusMinusButtons } from '../common/form/PlusMinusButtons';
 
-const EMPTY_REGIMEN = { name: '', manufacturers: [] };
+const EMPTY_REGIMEN = { name: '', manufacturers: [], isValid: true };
 
 export function Regimen({
   intl,
@@ -26,7 +26,6 @@ export function Regimen({
   vaccinationSchedule,
   savedRegimen,
   patientLinkedRegimens,
-  showValidationErrors,
   isRegimenNameDuplicated,
   readOnly = false,
   openModal,
@@ -67,8 +66,6 @@ export function Regimen({
     onValueChange('vaccine')(vaccine);
   };
 
-  const getInputClass = (isInvalid) => showValidationErrors && isInvalid ? 'invalid' : '';
-
   return (
     <>
       <Label>
@@ -83,6 +80,7 @@ export function Regimen({
         const isNameEmpty = !regimen.name;
         const isNameDuplicated = isRegimenNameDuplicated(vaccine, regimen, i);
         const isManufacturersEmpty = !regimen.manufacturers.length;
+        const isValid = regimen.isValid;
         return (
           <div key={`regimen-${i}`} className="inline-fields">
             <div className="flex-1 input-container">
@@ -92,9 +90,9 @@ export function Regimen({
                 value={regimen.name}
                 onChange={onVaccineChange(i, 'name', false)}
                 readOnly={!!regimen.name && savedRegimen.includes(regimen)}
-                className={getInputClass(isNameEmpty || isNameDuplicated)}
+                className={!isValid && (isNameEmpty || isNameDuplicated) ? 'invalid' : ''}
               />
-              {showValidationErrors &&
+              {!isValid &&
                 (isNameEmpty ? (
                   <ValidationError message="vmpConfig.error.nameRequired" />
                 ) : (
@@ -112,14 +110,14 @@ export function Regimen({
                   label: manufacturer.name,
                   value: manufacturer.name
                 }))}
-                className={showValidationErrors && isManufacturersEmpty ? 'default-select invalid' : 'default-select'}
+                className={!isValid && isManufacturersEmpty ? 'default-select invalid' : 'default-select'}
                 classNamePrefix="default-select"
                 isMulti
                 isOptionSelected={() => false}
                 theme={selectDefaultTheme}
                 isDisabled={savedRegimen.includes(regimen) && readOnly}
               />
-              {showValidationErrors && isManufacturersEmpty && <ValidationError message="vmpConfig.error.regimenManufacturersEmpty" />}
+              {!isValid && isManufacturersEmpty && <ValidationError message="vmpConfig.error.regimenManufacturersEmpty" />}
             </div>
             <PlusMinusButtons
               intl={intl}

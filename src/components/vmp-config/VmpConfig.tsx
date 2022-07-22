@@ -51,6 +51,7 @@ import {COUNTRY_CONCEPT_REPRESENTATION, COUNTRY_CONCEPT_UUID} from '../../shared
 import {IConceptSetMember} from '../../shared/models/concept';
 import {getConcept} from '../../redux/reducers/concept';
 import {FREE_TEXT, MASTER_ADDRESS_DATA} from '../../shared/constants/address';
+import {cloneDeep} from 'lodash';
 
 export interface IVmpConfigProps extends StateProps, DispatchProps, RouteComponentProps {
   intl: IntlShape;
@@ -73,7 +74,6 @@ export interface IVmpConfigState {
   vmpVaccinationSchedule: IVmpVaccinationSchedule[];
   vmpVaccinationScheduleSetting: {};
   savedRegimen: any[];
-  showValidationErrors: boolean;
   isModalOpen: boolean;
   modalHeader: {};
   modalBody: {};
@@ -91,7 +91,6 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
     vmpVaccinationSchedule: [],
     vmpVaccinationScheduleSetting: {uuid: null, value: null},
     savedRegimen: [],
-    showValidationErrors: false,
     isModalOpen: false,
     modalHeader: {id: '', values: {}},
     modalBody: {id: '', values: {}},
@@ -139,8 +138,7 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
       this.setState({
         vmpConfig: config,
         vmpConfigSetting: this.props.setting,
-        savedRegimen: _.clone(config.vaccine),
-        showValidationErrors: false
+        savedRegimen: _.clone(config.vaccine)
       });
     } else if (this.props.setting?.property === VMP_VACCINATION_SCHEDULE_SETTING_KEY) {
       this.setState({
@@ -246,22 +244,47 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
 
   isFormValid = () => {
     const {manufacturers, vaccine, addressFields} = this.state.vmpConfig;
-    let addressFlag = false;
 
-    addressFields?.map(countryConfig => {
-      countryConfig?.fields?.forEach(({name, field}) => {
+    let isFormValid = true;
+
+    const clonedManufacturers = cloneDeep(manufacturers);
+    clonedManufacturers.forEach((manufacturer, manufacturerIdx) => {
+      if (!manufacturer.name || !validateRegex(manufacturer.barcodeRegex) || !manufacturer.barcodeRegex) {
+        clonedManufacturers[manufacturerIdx].isValid = false;
+          isFormValid = false;
+      }
+    });
+
+    const clonedVaccines = cloneDeep(vaccine);
+    clonedVaccines.forEach((regimen, regimenIdx) => {
+      if (!regimen.name || 
+          !regimen.manufacturers.length ||
+          this.isRegimenNameDuplicated(clonedVaccines, regimen, regimenIdx)) {
+        clonedVaccines[regimenIdx].isValid = false;
+        isFormValid = false;
+      }
+    })
+
+    const clonedAddressFields = cloneDeep(addressFields);
+    clonedAddressFields?.map((countryConfig) => {
+      countryConfig?.fields?.forEach(({name, field}, countryConfigIdx) => {
         if (!name || !field) {
-          addressFlag = true;
+          countryConfig.fields[countryConfigIdx].isValid = false;
+          isFormValid = false;
         }
       });
     });
 
-    return (
-      !manufacturers.some(manufacturer => !manufacturer.name || !validateRegex(manufacturer.barcodeRegex) || !manufacturer.barcodeRegex) &&
-      !vaccine.some(regimen => !regimen.name || !regimen.manufacturers.length) &&
-      !vaccine.some((regimen, idx) => this.isRegimenNameDuplicated(vaccine, regimen, idx)) &&
-      !addressFlag
-    );
+    this.setState({
+      vmpConfig: {
+        ...this.state.vmpConfig, 
+        manufacturers: clonedManufacturers,
+        vaccine: clonedVaccines,
+        addressFields: clonedAddressFields
+      }
+    })
+  
+    return isFormValid;
   };
 
   save = () => {
@@ -288,8 +311,7 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
           this.closeModal();
           scrollToTop();
         },
-        onModalCancel: null,
-        showValidationErrors: true
+        onModalCancel: null
       });
     }
   };
@@ -326,7 +348,7 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
 
   render() {
     const {intl, appError, appLoading, loading, patientLinkedRegimens, syncScopes, authSteps, regimenUpdatePermitted, loadingConcept, countryOptions} = this.props;
-    const {vmpConfig, vmpVaccinationSchedule, savedRegimen, showValidationErrors} = this.state;
+    const {vmpConfig, vmpVaccinationSchedule, savedRegimen} = this.state;
     const isLoading = appLoading || (loading && !vmpConfig) || loadingConcept;
     return (
       <div className="vmp-config">
@@ -365,7 +387,6 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
                 <Manufacturers
                   intl={intl}
                   config={vmpConfig}
-                  showValidationErrors={showValidationErrors}
                   openModal={this.openModal}
                   closeModal={this.closeModal}
                   onValueChange={this.onValueChange}
@@ -378,7 +399,6 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
                   vaccinationSchedule={vmpVaccinationSchedule}
                   savedRegimen={savedRegimen}
                   patientLinkedRegimens={patientLinkedRegimens}
-                  showValidationErrors={showValidationErrors}
                   isRegimenNameDuplicated={this.isRegimenNameDuplicated}
                   readOnly={!regimenUpdatePermitted}
                   openModal={this.openModal}
@@ -411,7 +431,6 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
                   config={vmpConfig}
                   onValueChange={this.onValueChange}
                   countryOptions={countryOptions}
-                  showValidationErrors={showValidationErrors}
                 />
               </div>
               <div className="mt-5 pb-5">

@@ -19,7 +19,7 @@ import _ from 'lodash';
 import ValidationError from '../common/form/ValidationError';
 import { PlusMinusButtons } from '../common/form/PlusMinusButtons';
 
-const EMPTY_MANUFACTURER = { name: '', barcodeRegex: '' };
+const EMPTY_MANUFACTURER = { name: '', barcodeRegex: '', isValid: true };
 
 export function CanUseDifferentManufacturers({ intl, config, onValueChange }) {
   return (
@@ -42,7 +42,7 @@ export function CanUseDifferentManufacturers({ intl, config, onValueChange }) {
   );
 }
 
-export function Manufacturers({ intl, config, showValidationErrors, openModal, closeModal, onValueChange }) {
+export function Manufacturers({ intl, config, openModal, closeModal, onValueChange }) {
   const manufacturers = config.manufacturers || [];
   const vaccine = config.vaccine || [];
 
@@ -105,6 +105,7 @@ export function Manufacturers({ intl, config, showValidationErrors, openModal, c
       {(manufacturers || []).map((manufacturer, i) => {
         const isNameEmpty = !manufacturer.name;
         const isBarcodeRegexInvalid = !validateRegex(manufacturer.barcodeRegex) || !manufacturer.barcodeRegex;
+        const isValid = manufacturer.isValid;
         return (
           <div key={`manufacturers-${i}`} className="inline-fields">
             <div className="flex-1 input-container">
@@ -113,9 +114,9 @@ export function Manufacturers({ intl, config, showValidationErrors, openModal, c
                 showPlaceholder={!!manufacturer.name}
                 value={manufacturer.name}
                 onChange={onManufacturerChange(i, 'name')}
-                className={showValidationErrors && isNameEmpty ? 'invalid' : ''}
+                className={!isValid && isNameEmpty ? 'invalid' : ''}
               />
-              {showValidationErrors && isNameEmpty && <ValidationError message="vmpConfig.error.nameRequired" />}
+              {!isValid && isNameEmpty && <ValidationError message="vmpConfig.error.nameRequired" />}
             </div>
             <div className="flex-2 input-container">
               <InputWithPlaceholder
@@ -123,9 +124,9 @@ export function Manufacturers({ intl, config, showValidationErrors, openModal, c
                 showPlaceholder={!!manufacturer.barcodeRegex}
                 value={manufacturer.barcodeRegex}
                 onChange={onManufacturerChange(i, 'barcodeRegex')}
-                className={showValidationErrors && isBarcodeRegexInvalid ? 'invalid' : ''}
+                className={!isValid && isBarcodeRegexInvalid ? 'invalid' : ''}
               />
-              {showValidationErrors && isBarcodeRegexInvalid && <ValidationError message="vmpConfig.error.barcodeRegexInvalid" />}
+              {!isValid && isBarcodeRegexInvalid && <ValidationError message="vmpConfig.error.barcodeRegexInvalid" />}
             </div>
             <PlusMinusButtons
               intl={intl}

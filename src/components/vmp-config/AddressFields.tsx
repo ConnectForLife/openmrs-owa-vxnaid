@@ -32,7 +32,7 @@ import {PlusMinusButtons} from '../common/form/PlusMinusButtons';
 import ValidationError from '../common/form/ValidationError';
 import cx from 'classnames';
 
-export function AddressFields({intl, config, onValueChange, countryOptions, showValidationErrors}) {
+export function AddressFields({intl, config, onValueChange, countryOptions}) {
   const [fieldTypeMasterAddrDataLeft, setFieldTypeMasterAddrDataLeft] = useState([]);
   const [fieldTypeFreeTextLeft, setFieldTypeFreeTextLeft] = useState([]);
 
@@ -136,7 +136,7 @@ export function AddressFields({intl, config, onValueChange, countryOptions, show
   };
 
   const addAddressPart = countryIdx => {
-    addressFields[countryIdx].fields.push({});
+    addressFields[countryIdx].fields.push({ isValid: true });
     onValueChange('addressFields')(addressFields);
   };
 
@@ -239,7 +239,6 @@ export function AddressFields({intl, config, onValueChange, countryOptions, show
             </div>
             <div className="inline-fields">
               <div className="order-icons"/>
-
               <SelectWithPlaceholder
                 placeholder={intl.formatMessage({id: 'vmpConfig.country'})}
                 showPlaceholder={!country.countryName}
@@ -250,7 +249,6 @@ export function AddressFields({intl, config, onValueChange, countryOptions, show
                 classNamePrefix="default-select"
                 theme={selectDefaultTheme}
               />
-
               <InputWithPlaceholder
                 placeholder={intl.formatMessage({id: 'vmpConfig.displayName'})}
                 showPlaceholder={!!country.countryName}
@@ -275,6 +273,7 @@ export function AddressFields({intl, config, onValueChange, countryOptions, show
               const isNameEmpty = !addressPart.name;
               const isFieldEmpty = !addressPart.field;
               let field = getFieldKind(addressPart.field);
+              const isValid = addressPart.isValid;
 
               return (
                 <div key={`addressField-${i}-${j}`} className="inline-fields">
@@ -304,9 +303,9 @@ export function AddressFields({intl, config, onValueChange, countryOptions, show
                       wrapperClassName="flex-1"
                       classNamePrefix="default-select"
                       theme={selectDefaultTheme}
-                      className={cx({invalid: showValidationErrors && isFieldEmpty})}
+                      className={cx({invalid: !isValid && isFieldEmpty})}
                     />
-                    {showValidationErrors && isFieldEmpty && <ValidationError message="vmpConfig.error.fieldTypeRequired"/>}
+                    {!isValid && isFieldEmpty && <ValidationError message="vmpConfig.error.fieldTypeRequired"/>}
                   </div>
                   <div className="flex-1 input-container">
                     <InputWithPlaceholder
@@ -315,9 +314,9 @@ export function AddressFields({intl, config, onValueChange, countryOptions, show
                       value={name || ''}
                       onChange={onCountryChange(i, j, 'name', false)}
                       wrapperClassName="flex-1"
-                      className={cx({invalid: showValidationErrors && isNameEmpty})}
+                      className={cx({invalid: !isValid && isNameEmpty})}
                     />
-                    {showValidationErrors && isNameEmpty && <ValidationError message="vmpConfig.error.displayNameRequired"/>}
+                    {!isValid && isNameEmpty && <ValidationError message="vmpConfig.error.displayNameRequired"/>}
                   </div>
                   <PlusMinusButtons
                     intl={intl}
