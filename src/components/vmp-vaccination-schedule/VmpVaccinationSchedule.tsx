@@ -33,7 +33,7 @@ import { IVmpVaccinationSchedule } from '../../shared/models/vmp-vaccination-sch
 import { ConfirmationModal } from '../common/form/ConfirmationModal';
 import { extractEventValue, ordinalIndicator, selectDefaultTheme } from '../../shared/util/form-util';
 import _ from 'lodash';
-import { successToast, errorToast } from '@bit/soldevelo-omrs.cfl-components.toast-handler';
+import { successToast, errorToast } from '../toast-handler/toast-handler';
 import { IVmpConfig } from 'src/shared/models/vmp-config';
 import { PlusMinusButtons } from '../common/form/PlusMinusButtons';
 

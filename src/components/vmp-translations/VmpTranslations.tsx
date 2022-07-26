@@ -17,7 +17,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { Button, Spinner, Table } from 'reactstrap';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ConfirmationModal } from '../common/form/ConfirmationModal';
-import { successToast, errorToast } from '@bit/soldevelo-omrs.cfl-components.toast-handler';
+import { successToast, errorToast } from '../toast-handler/toast-handler';
 import { getAddressData } from '../../redux/reducers/address-data';
 import Dropzone from '../common/dropzone/Dropzone';
 import { createSetting, getSettingByQuery, updateSetting } from '../../redux/reducers/setttings';

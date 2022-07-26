@@ -10,8 +10,8 @@
 
 import {combineReducers} from 'redux';
 
-import customizeReducer from '@bit/soldevelo-cfl.omrs-components.customize/customize.reducer';
-import patient from '@bit/soldevelo-omrs.cfl-components.person-header/person-header/patient.reducer';
+import customizeReducer from '../../components/customize/customize.reducer';
+import patient from '../../components/person-header/patient.reducer';
 
 import apps from './apps';
 import breadcrumbs from './breadcrumbs';

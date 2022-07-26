@@ -31,7 +31,7 @@ import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {ROOT_URL} from '../../shared/constants/openmrs';
 import {IVmpConfig} from '../../shared/models/vmp-config';
 import {extractEventValue, getPlaceholder, validateRegex} from '../../shared/util/form-util';
-import {errorToast, successToast} from '@bit/soldevelo-omrs.cfl-components.toast-handler';
+import {errorToast, successToast} from '../toast-handler/toast-handler';
 import {TEN, ZERO} from '../../shared/constants/input';
 import {ConfirmationModal} from '../common/form/ConfirmationModal';
 import {getPatientLinkedRegimens} from '../../redux/reducers/patient';
@@ -256,7 +256,7 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
     });
 
     clonedVaccines.forEach((regimen, regimenIdx) => {
-      if (!regimen.name || 
+      if (!regimen.name ||
           !regimen.manufacturers.length ||
           this.isRegimenNameDuplicated(clonedVaccines, regimen, regimenIdx)) {
         clonedVaccines[regimenIdx].isValid = false;
@@ -275,13 +275,13 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
 
     this.setState({
       vmpConfig: {
-        ...this.state.vmpConfig, 
+        ...this.state.vmpConfig,
         manufacturers: clonedManufacturers,
         vaccine: clonedVaccines,
         addressFields: clonedAddressFields
       }
     });
-  
+
     return isFormValid;
   };
 
