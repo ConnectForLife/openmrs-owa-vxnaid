@@ -272,9 +272,9 @@ export function AddressFields({intl, config, onValueChange, countryOptions}) {
               const name = addressPart.name;
               const isNameEmpty = !addressPart.name;
               const isFieldEmpty = !addressPart.field;
-              let field = getFieldKind(addressPart.field);
               const isValid = addressPart.isValid;
-
+              let field = getFieldKind(addressPart.field);
+              
               return (
                 <div key={`addressField-${i}-${j}`} className="inline-fields">
                   <div className="d-flex flex-column order-icons">

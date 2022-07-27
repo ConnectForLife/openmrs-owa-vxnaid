@@ -18,6 +18,7 @@ import { extractEventValue, validateRegex, yesNoOptions } from '../../shared/uti
 import _ from 'lodash';
 import ValidationError from '../common/form/ValidationError';
 import { PlusMinusButtons } from '../common/form/PlusMinusButtons';
+import cx from 'classnames';
 
 const EMPTY_MANUFACTURER = { name: '', barcodeRegex: '', isValid: true };
 
@@ -114,7 +115,7 @@ export function Manufacturers({ intl, config, openModal, closeModal, onValueChan
                 showPlaceholder={!!manufacturer.name}
                 value={manufacturer.name}
                 onChange={onManufacturerChange(i, 'name')}
-                className={!isValid && isNameEmpty ? 'invalid' : ''}
+                className={cx({invalid: !isValid && isNameEmpty})}
               />
               {!isValid && isNameEmpty && <ValidationError message="vmpConfig.error.nameRequired" />}
             </div>
@@ -124,7 +125,7 @@ export function Manufacturers({ intl, config, openModal, closeModal, onValueChan
                 showPlaceholder={!!manufacturer.barcodeRegex}
                 value={manufacturer.barcodeRegex}
                 onChange={onManufacturerChange(i, 'barcodeRegex')}
-                className={!isValid && isBarcodeRegexInvalid ? 'invalid' : ''}
+                className={cx({invalid: !isValid && isBarcodeRegexInvalid})}
               />
               {!isValid && isBarcodeRegexInvalid && <ValidationError message="vmpConfig.error.barcodeRegexInvalid" />}
             </div>

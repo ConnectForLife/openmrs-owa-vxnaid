@@ -17,6 +17,7 @@ import { extractEventValue, selectDefaultTheme } from '../../shared/util/form-ut
 import _ from 'lodash';
 import ValidationError from '../common/form/ValidationError';
 import { PlusMinusButtons } from '../common/form/PlusMinusButtons';
+import cx from 'classnames';
 
 const EMPTY_REGIMEN = { name: '', manufacturers: [], isValid: true };
 
@@ -90,7 +91,7 @@ export function Regimen({
                 value={regimen.name}
                 onChange={onVaccineChange(i, 'name', false)}
                 readOnly={!!regimen.name && savedRegimen.includes(regimen)}
-                className={!isValid && (isNameEmpty || isNameDuplicated) ? 'invalid' : ''}
+                className={cx({invalid: !isValid && (isNameEmpty || isNameDuplicated)})}
               />
               {!isValid &&
                 (isNameEmpty ? (
@@ -110,7 +111,7 @@ export function Regimen({
                   label: manufacturer.name,
                   value: manufacturer.name
                 }))}
-                className={!isValid && isManufacturersEmpty ? 'default-select invalid' : 'default-select'}
+                className={cx('default-select', {invalid: !isValid && isManufacturersEmpty})}
                 classNamePrefix="default-select"
                 isMulti
                 isOptionSelected={() => false}

@@ -31,7 +31,6 @@ import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {ROOT_URL} from '../../shared/constants/openmrs';
 import {IVmpConfig} from '../../shared/models/vmp-config';
 import {extractEventValue, getPlaceholder, validateRegex} from '../../shared/util/form-util';
-import _ from 'lodash';
 import {errorToast, successToast} from '@bit/soldevelo-omrs.cfl-components.toast-handler';
 import {TEN, ZERO} from '../../shared/constants/input';
 import {ConfirmationModal} from '../common/form/ConfirmationModal';
@@ -51,7 +50,7 @@ import {COUNTRY_CONCEPT_REPRESENTATION, COUNTRY_CONCEPT_UUID} from '../../shared
 import {IConceptSetMember} from '../../shared/models/concept';
 import {getConcept} from '../../redux/reducers/concept';
 import {FREE_TEXT, MASTER_ADDRESS_DATA} from '../../shared/constants/address';
-import {cloneDeep} from 'lodash';
+import {defaults, clone, cloneDeep} from 'lodash';
 
 export interface IVmpConfigProps extends StateProps, DispatchProps, RouteComponentProps {
   intl: IntlShape;
@@ -123,7 +122,7 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
     let config = parseJson(this.props.config);
 
     if (this.props.setting?.property === VMP_CONFIG_SETTING_KEY) {
-      config = _.defaults(config, DEFAULT_VMP_CONFIG);
+      config = defaults(config, DEFAULT_VMP_CONFIG);
       const addressFields = config.addressFields;
 
       // make it a list so it's possible to maintain the order while replacing country name
@@ -138,7 +137,7 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
       this.setState({
         vmpConfig: config,
         vmpConfigSetting: this.props.setting,
-        savedRegimen: _.clone(config.vaccine)
+        savedRegimen: clone(config.vaccine)
       });
     } else if (this.props.setting?.property === VMP_VACCINATION_SCHEDULE_SETTING_KEY) {
       this.setState({
@@ -151,7 +150,7 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
   };
 
   generateConfig = () => {
-    const config = _.cloneDeep(this.state.vmpConfig);
+    const config = cloneDeep(this.state.vmpConfig);
 
     this.revertAddressFieldsBackToMap(config);
     this.revertTimeoutsBackToMs(config);
@@ -244,18 +243,18 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
 
   isFormValid = () => {
     const {manufacturers, vaccine, addressFields} = this.state.vmpConfig;
-
+    const clonedManufacturers = cloneDeep(manufacturers);
+    const clonedVaccines = cloneDeep(vaccine);
+    const clonedAddressFields = cloneDeep(addressFields);
     let isFormValid = true;
 
-    const clonedManufacturers = cloneDeep(manufacturers);
-    clonedManufacturers.forEach((manufacturer, manufacturerIdx) => {
-      if (!manufacturer.name || !validateRegex(manufacturer.barcodeRegex) || !manufacturer.barcodeRegex) {
+    clonedManufacturers.forEach(({name, barcodeRegex}, manufacturerIdx) => {
+      if (!name || !validateRegex(barcodeRegex) || !barcodeRegex) {
         clonedManufacturers[manufacturerIdx].isValid = false;
           isFormValid = false;
       }
     });
 
-    const clonedVaccines = cloneDeep(vaccine);
     clonedVaccines.forEach((regimen, regimenIdx) => {
       if (!regimen.name || 
           !regimen.manufacturers.length ||
@@ -263,10 +262,9 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
         clonedVaccines[regimenIdx].isValid = false;
         isFormValid = false;
       }
-    })
+    });
 
-    const clonedAddressFields = cloneDeep(addressFields);
-    clonedAddressFields?.map((countryConfig) => {
+    clonedAddressFields?.forEach(countryConfig => {
       countryConfig?.fields?.forEach(({name, field}, countryConfigIdx) => {
         if (!name || !field) {
           countryConfig.fields[countryConfigIdx].isValid = false;
@@ -282,7 +280,7 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
         vaccine: clonedVaccines,
         addressFields: clonedAddressFields
       }
-    })
+    });
   
     return isFormValid;
   };
