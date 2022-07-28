@@ -161,7 +161,7 @@ export function AddressFields({intl, config, onValueChange, countryOptions}) {
 
     fields.splice(addressPartIdx, 1);
     if (fields.length === 0) {
-      fields.push({});
+      addressFields[countryIdx].fields = [];
     }
     onValueChange('addressFields')(addressFields);
   };
