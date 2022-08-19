@@ -178,9 +178,6 @@ export function AddressFields({intl, config, onValueChange, countryOptions}) {
     setFieldTypeMasterAddrDataLeft(fieldTypeMasterAddrDataLeft);
     addressFields.splice(countryIdx, 1);
 
-    if (addressFields.length === 0) {
-      addCountry();
-    }
     onValueChange('addressFields')(addressFields);
   };
 
@@ -241,7 +238,7 @@ export function AddressFields({intl, config, onValueChange, countryOptions}) {
               <div className="order-icons"/>
               <SelectWithPlaceholder
                 placeholder={intl.formatMessage({id: 'vmpConfig.country'})}
-                showPlaceholder={!country.countryName}
+                showPlaceholder={!!country.countryName}
                 value={countryOptions.find(({value}) => value === country.countryName)}
                 onChange={onCountryChange(i, null, null, true)}
                 options={countryOptions}
