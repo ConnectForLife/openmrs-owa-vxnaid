@@ -492,6 +492,7 @@ class VmpVaccinationSchedule extends React.Component<IVmpVaccinationScheduleProp
       onYes={this.state.onModalConfirm}
       onNo={this.state.onModalCancel}
       isOpen={this.state.isModalOpen}
+      customYesButtonText={null}
     />
   );
 

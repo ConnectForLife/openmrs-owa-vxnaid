@@ -78,6 +78,7 @@ export interface IVmpConfigState {
   modalBody: {};
   onModalConfirm: any;
   onModalCancel: any;
+  isManufacturerWarningModalOpen: boolean;
 }
 
 const MS_IN_A_MINUTE = 1000 * 60;
@@ -94,7 +95,8 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
     modalHeader: {id: '', values: {}},
     modalBody: {id: '', values: {}},
     onModalConfirm: null,
-    onModalCancel: null
+    onModalCancel: null,
+    isManufacturerWarningModalOpen: false
   };
 
   componentDidMount() {
@@ -286,19 +288,12 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
   };
 
   save = () => {
-    const {vmpVaccinationSchedule, vmpConfigSetting, vmpVaccinationScheduleSetting} = this.state;
+    const isManufacturersBarcodeRegexDuplicated = this.isManufacturersBarcodeRegexDuplicated();
     if (this.isFormValid()) {
-      const config = this.generateConfig();
-      const configJson = JSON.stringify(config);
-      if (vmpConfigSetting?.uuid) {
-        vmpConfigSetting.value = configJson;
-        this.props.updateSetting(vmpConfigSetting);
+      if (isManufacturersBarcodeRegexDuplicated) {
+        this.openManufacturerWarningModal();
       } else {
-        this.props.createSetting(VMP_CONFIG_SETTING_KEY, configJson);
-      }
-      if (vmpVaccinationScheduleSetting?.uuid) {
-        vmpVaccinationScheduleSetting.value = JSON.stringify(vmpVaccinationSchedule);
-        this.props.updateSetting(vmpVaccinationScheduleSetting);
+        this.savePage();
       }
     } else {
       this.setState({
@@ -314,6 +309,34 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
     }
   };
 
+  isManufacturersBarcodeRegexDuplicated = () => {
+    const manufacturers = this.state.vmpConfig.manufacturers;
+    const barcodeRegexes = manufacturers.map(el => el.barcodeRegex);
+    let isBarcodeRegexDuplicated = false;
+    isBarcodeRegexDuplicated = barcodeRegexes.some((element, index) => {
+      return barcodeRegexes.indexOf(element) !== index;
+    });
+
+    return isBarcodeRegexDuplicated;
+  }
+
+  savePage = () => {
+    const {vmpVaccinationSchedule, vmpConfigSetting, vmpVaccinationScheduleSetting} = this.state;
+
+    const config = this.generateConfig();
+    const configJson = JSON.stringify(config);
+    if (vmpConfigSetting?.uuid) {
+      vmpConfigSetting.value = configJson;
+      this.props.updateSetting(vmpConfigSetting);
+    } else {
+      this.props.createSetting(VMP_CONFIG_SETTING_KEY, configJson);
+    }
+    if (vmpVaccinationScheduleSetting?.uuid) {
+      vmpVaccinationScheduleSetting.value = JSON.stringify(vmpVaccinationSchedule);
+      this.props.updateSetting(vmpVaccinationScheduleSetting);
+    }
+  }
+
   isRegimenNameDuplicated = (vaccine, regimen, idx) =>
     !!regimen.name && !this.state.savedRegimen.includes(regimen) && !!vaccine.find((r, j) => idx !== j && r.name === regimen.name);
 
@@ -324,8 +347,27 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
       onYes={this.state.onModalConfirm}
       onNo={this.state.onModalCancel}
       isOpen={this.state.isModalOpen}
+      customYesButtonText={null}
     />
   );
+
+  renderManufacturerWarningModal = () => (
+    <ConfirmationModal
+      header={{ id: 'vmpConfig.warning.header' }}
+      body={{ id: 'vmpConfig.warning.duplicatedManufacturerBarcodeRegex' }}
+      onYes={() => {
+        this.savePage();
+        this.closeManufacturerWarningModal();
+      }}
+      onNo={this.closeManufacturerWarningModal}
+      isOpen={this.state.isManufacturerWarningModalOpen}
+      customYesButtonText={{ id: 'custom.yesButtonText' }}
+    />
+  );
+
+  closeManufacturerWarningModal = () => this.setState({ isManufacturerWarningModalOpen: false });
+
+  openManufacturerWarningModal = () => this.setState({ isManufacturerWarningModalOpen: true });
 
   openModal = (modalHeader, modalBody, onModalConfirm = null, onModalCancel = null) => {
     this.setState({
@@ -351,6 +393,7 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
     return (
       <div className="vmp-config">
         {this.modal()}
+        {this.renderManufacturerWarningModal()}
         <h2>
           <FormattedMessage id="vmpConfig.title"/>
         </h2>

@@ -311,6 +311,7 @@ export class VmpTranslations extends React.Component<IVmpTranslationsProps, IVmp
       onYes={this.state.onConfirmationModalConfirm}
       onNo={this.state.onConfirmationModalCancel}
       isOpen={this.state.isConfirmationModalOpen}
+      customYesButtonText={null}
     />
   );
 

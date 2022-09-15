@@ -33,6 +33,9 @@
     "true": "True",
     "false": "False"
   },
+  "custom": {
+    "yesButtonText": "Yes, save"
+  },
   "dropzone": {
     "openFileDialog": "Open File Dialog",
     "acceptedFile": "Accepted File:",
@@ -96,7 +99,8 @@
     "warning": {
       "header": "Warning",
       "deleteManufacturer": "Are you sure you want to delete this manufacturer?",
-      "deleteRegimen": "Are you sure you want to delete this regimen?"
+      "deleteRegimen": "Are you sure you want to delete this regimen?",
+      "duplicatedManufacturerBarcodeRegex": "You entered manufacturers with the same barcode regex. Are you sure this is correct?"
     },
     "info": {
       "header": "Info",

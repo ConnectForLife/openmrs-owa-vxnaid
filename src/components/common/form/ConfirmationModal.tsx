@@ -25,10 +25,14 @@ export interface IConfirmationModalProps {
   onYes: () => void;
   onNo: () => void;
   isOpen: boolean;
+  customYesButtonText: {
+    id: string;
+    values?: {};
+  };
 }
 
 export const ConfirmationModal = (props: IConfirmationModalProps) => {
-  const { header, body, onYes, onNo, isOpen } = props;
+  const { header, body, onYes, onNo, isOpen, customYesButtonText } = props;
   const headerValues = !!header && !!header.values && header.values;
   const bodyValues = !!body && !!body.values && body.values;
   return (
@@ -49,7 +53,7 @@ export const ConfirmationModal = (props: IConfirmationModalProps) => {
         )}
         {!!onYes && (
           <Button className="btn btn-primary" onClick={onYes} data-testid="confirmModalButton">
-            <FormattedMessage id={`${!!onNo ? 'common.yes' : 'common.ok'}`} />
+            <FormattedMessage id={`${!!onNo ? customYesButtonText && customYesButtonText.id ? customYesButtonText.id : 'common.yes' : 'common.ok'}`} />
           </Button>
         )}
       </ModalFooter>
