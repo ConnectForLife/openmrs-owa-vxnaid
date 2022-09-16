@@ -78,7 +78,7 @@ export interface IVmpConfigState {
   modalBody: {};
   onModalConfirm: any;
   onModalCancel: any;
-  isManufacturerWarningModalOpen: boolean;
+  customYesButtonText: {};
 }
 
 const MS_IN_A_MINUTE = 1000 * 60;
@@ -96,7 +96,7 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
     modalBody: {id: '', values: {}},
     onModalConfirm: null,
     onModalCancel: null,
-    isManufacturerWarningModalOpen: false
+    customYesButtonText: {id: '', values: {}}
   };
 
   componentDidMount() {
@@ -288,9 +288,8 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
   };
 
   save = () => {
-    const isManufacturersBarcodeRegexDuplicated = this.isManufacturersBarcodeRegexDuplicated();
     if (this.isFormValid()) {
-      if (isManufacturersBarcodeRegexDuplicated) {
+      if (this.isManufacturersBarcodeRegexDuplicated()) {
         this.openManufacturerWarningModal();
       } else {
         this.savePage();
@@ -347,29 +346,21 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
       onYes={this.state.onModalConfirm}
       onNo={this.state.onModalCancel}
       isOpen={this.state.isModalOpen}
-      customYesButtonText={null}
+      customYesButtonText={this.state.customYesButtonText}
     />
   );
 
-  renderManufacturerWarningModal = () => (
-    <ConfirmationModal
-      header={{ id: 'vmpConfig.warning.header' }}
-      body={{ id: 'vmpConfig.warning.duplicatedManufacturerBarcodeRegex' }}
-      onYes={() => {
-        this.savePage();
-        this.closeManufacturerWarningModal();
-      }}
-      onNo={this.closeManufacturerWarningModal}
-      isOpen={this.state.isManufacturerWarningModalOpen}
-      customYesButtonText={{ id: 'custom.yesButtonText' }}
-    />
-  );
+  openManufacturerWarningModal = () => {
+    this.openModal(
+      'vmpConfig.warning.header',
+      'vmpConfig.warning.duplicatedManufacturerBarcodeRegex',
+      () => this.savePage(),
+      () => this.closeModal(),
+      'custom.yesButtonText'
+    );
+  };
 
-  closeManufacturerWarningModal = () => this.setState({ isManufacturerWarningModalOpen: false });
-
-  openManufacturerWarningModal = () => this.setState({ isManufacturerWarningModalOpen: true });
-
-  openModal = (modalHeader, modalBody, onModalConfirm = null, onModalCancel = null) => {
+  openModal = (modalHeader, modalBody, onModalConfirm = null, onModalCancel = null, customYesButtonText = null) => {
     this.setState({
       isModalOpen: true,
       modalHeader: {id: modalHeader},
@@ -380,7 +371,8 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
         }
         this.closeModal();
       },
-      onModalCancel
+      onModalCancel,
+      customYesButtonText: {id: customYesButtonText}
     });
   };
 
@@ -393,7 +385,6 @@ export class VmpConfig extends React.Component<IVmpConfigProps, IVmpConfigState>
     return (
       <div className="vmp-config">
         {this.modal()}
-        {this.renderManufacturerWarningModal()}
         <h2>
           <FormattedMessage id="vmpConfig.title"/>
         </h2>

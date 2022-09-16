@@ -53,7 +53,7 @@ export const ConfirmationModal = (props: IConfirmationModalProps) => {
         )}
         {!!onYes && (
           <Button className="btn btn-primary" onClick={onYes} data-testid="confirmModalButton">
-            <FormattedMessage id={`${!!onNo ? customYesButtonText && customYesButtonText.id ? customYesButtonText.id : 'common.yes' : 'common.ok'}`} />
+            <FormattedMessage id={`${!!onNo ? customYesButtonText?.id ? customYesButtonText.id : 'common.yes' : 'common.ok'}`} />
           </Button>
         )}
       </ModalFooter>
