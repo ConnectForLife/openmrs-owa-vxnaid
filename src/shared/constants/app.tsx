@@ -8,4 +8,4 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-export const CONFIGURE_METADATA_APPS = 'cflui.configureMetadataApps';
+export const VXNAID_CONFIG_APP = 'vxnaid.Config';

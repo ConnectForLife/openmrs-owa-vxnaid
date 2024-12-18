@@ -12,7 +12,7 @@ import axios from 'axios';
 
 import { FAILURE, REQUEST, SUCCESS } from '../action-type.util';
 import { getAppConfig } from '../../shared/util/app-util';
-import { CONFIGURE_METADATA_APPS } from '../../shared/constants/app';
+import { VXNAID_CONFIG_APP } from '../../shared/constants/app';
 
 export const ACTION_TYPES = {
     GET_APPS: 'settings/GET_APPS'
@@ -34,10 +34,10 @@ const initialState = {
 
 export const getAppsState = apps => ({
     apps,
-    vmpSyncScopes: getAppConfig(apps, CONFIGURE_METADATA_APPS)?.syncScopes,
-    vmpAuthSteps: getAppConfig(apps, CONFIGURE_METADATA_APPS)?.authSteps,
-    vmpDosingVisitTypes: getAppConfig(apps, CONFIGURE_METADATA_APPS)?.dosingVisitTypes,
-    vmpRegimenUpdatePermitted: getAppConfig(apps, CONFIGURE_METADATA_APPS)?.regimenUpdatePermitted
+    vmpSyncScopes: getAppConfig(apps, VXNAID_CONFIG_APP)?.syncScopes,
+    vmpAuthSteps: getAppConfig(apps, VXNAID_CONFIG_APP)?.authSteps,
+    vmpDosingVisitTypes: getAppConfig(apps, VXNAID_CONFIG_APP)?.dosingVisitTypes,
+    vmpRegimenUpdatePermitted: getAppConfig(apps, VXNAID_CONFIG_APP)?.regimenUpdatePermitted
 });
 
 const reducer = (state = initialState, action) => {

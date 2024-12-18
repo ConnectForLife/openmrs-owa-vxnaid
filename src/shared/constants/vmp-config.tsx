@@ -22,10 +22,6 @@ export const DEFAULT_SYNC_SCOPES = [
   {
     value: 'site',
     label: 'Site'
-  },
-  {
-    value: 'cluster',
-    label: 'Cluster'
   }
 ];
 export const DEFAULT_AUTH_STEPS = [
@@ -40,6 +36,10 @@ export const DEFAULT_AUTH_STEPS = [
   {
     value: 'iris_scan',
     label: 'Iris Scan'
+  },
+  {
+    value: 'mother_name',
+    label: 'Mother Name'
   }
 ];
 export const DEFAULT_VMP_CONFIG = {
